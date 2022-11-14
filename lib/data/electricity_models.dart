@@ -21,7 +21,8 @@ class ElectricityPeriod {
   @JsonKey(name: "Point")
   List<ElectricityPoint> electricityPoints;
 
-  ElectricityPeriod({required this.timeInterval, required this.electricityPoints});
+  ElectricityPeriod(
+      {required this.timeInterval, required this.electricityPoints});
 
   factory ElectricityPeriod.fromJson(Map<String, dynamic> json) {
     final period = json['Period'];
@@ -58,15 +59,16 @@ class Point {
 
 @JsonSerializable()
 class ElectricityPoint {
-  String position;
+  int position;
   @JsonKey(name: "price.amount")
-  String price;
+  double price;
 
   ElectricityPoint({required this.position, required this.price});
 
   factory ElectricityPoint.fromJson(Map<String, dynamic> json) {
     final position = json['position']['\$t'];
     final price = json['price.amount']['\$t'];
-    return ElectricityPoint(position: position, price: price);
+    return ElectricityPoint(
+        position: int.parse(position), price: double.parse(price));
   }
 }

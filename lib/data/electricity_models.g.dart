@@ -56,8 +56,8 @@ Map<String, dynamic> _$PointToJson(Point instance) => <String, dynamic>{
 
 ElectricityPoint _$ElectricityPointFromJson(Map<String, dynamic> json) =>
     ElectricityPoint(
-      position: json['position'] as String,
-      price: json['price.amount'] as String,
+      position: json['position'] as int,
+      price: (json['price.amount'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$ElectricityPointToJson(ElectricityPoint instance) =>

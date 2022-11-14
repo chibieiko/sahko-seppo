@@ -1,61 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sahko_seppo/data/electricity_models.dart';
+import 'package:sahko_seppo/modules/home/home_item_widget.dart';
 
 import 'package:sahko_seppo/modules/spot_price_provider.dart';
 
-class Home extends ConsumerWidget {
+import 'calculations.dart';
+
+class Home extends ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  HomeState createState() => HomeState();
+}
+
+class HomeState extends ConsumerState<Home>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final spotPrices = ref.read(spotPriceProvider.notifier);
     final spotPricesState = ref.watch(spotPriceProvider);
 
-    Map<Duration, Duration> durationDelayMap =
-        spotPricesState.getDurationDelayMap();
+    if (spotPricesState.isLoading) {
+      animationController.animateTo(1);
+      animationController.repeat();
+    } else {
+      animationController.reset();
+    }
+
+    List<ElectricityPeriod> electricityPeriods =
+        spotPricesState.electricityPeriods;
+
+    String currentPrice =
+        "Current price ${getCurrentPrice(electricityPeriods) ?? "-"} snt/kWh";
+    String dishwasherDelay =
+        "Delay ${getOptimalDelayForNightTime(electricityPeriods, 3) ?? "-"} h";
+    int? bestTimeFor60degrees = getBestTimeForDayUse(electricityPeriods, 3);
+    int? bestTimeFor30and40Degrees = getBestTimeForDayUse(electricityPeriods, 2);
+    String degrees60 =
+        bestTimeFor60degrees != null ? "Start $bestTimeFor60degrees:00" : "-";
+    String degrees30and40 = bestTimeFor30and40Degrees != null
+        ? "Start $bestTimeFor30and40Degrees:00"
+        : "-";
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sähko Seppo"),
+        title: Text(
+          currentPrice,
+          style: const TextStyle(fontSize: 16),
+        ),
       ),
-      body: Column(
-        children: [
-          Text(spotPricesState.getCurrentPrice()),
-          Center(
-            child: Table(
-                border: TableBorder.all(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                columnWidths: const <int, TableColumnWidth>{
-                  0: IntrinsicColumnWidth(flex: 1.0),
-                  1: FlexColumnWidth(),
-                  2: FlexColumnWidth(),
-                },
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: <TableRow>[
-                      const TableRow(
-                          decoration: BoxDecoration(color: Colors.amber),
-                          children: <Widget>[
-                            Text('Duration'),
-                            Text('Delay'),
-                            Text('When')
-                          ]),
-                    ] +
-                    durationDelayMap.keys.map((key) {
-                      return TableRow(children: <Widget>[
-                        Text("${key.inMinutes} minutes"),
-                        Text(durationToString(durationDelayMap[key])),
-                        Text(timeAsString(
-                            DateTime.now().add(durationDelayMap[key]!)))
-                      ]);
-                    }).toList()),
-          ),
-        ],
-      ),
+      body: (Column(children: [
+        Card(
+            child: Column(
+          children: [
+            HomeItemWidget(
+                title: dishwasherDelay,
+                subTitle: 'Dishwasher',
+                icon: Icons.flatware),
+            const Divider(),
+            HomeItemWidget(
+                title: degrees60,
+                subTitle: 'Laundry Lasse and towels',
+                icon: Icons.local_laundry_service_outlined),
+            HomeItemWidget(
+                title: degrees30and40,
+                subTitle: 'Laundry normal',
+                icon: Icons.local_laundry_service_outlined),
+          ],
+        ))
+      ])),
       floatingActionButton: FloatingActionButton(
         onPressed: spotPrices.fetch,
         tooltip: 'Refresh',
-        child: const Icon(Icons.refresh),
+        child: RotationTransition(
+            turns: animationController, child: const Icon(Icons.refresh)),
       ),
     );
   }
