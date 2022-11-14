@@ -44,6 +44,7 @@ dependencies:
   json_annotation: ^4.7.0
   flutter_dotenv: ^5.0.2
   flutter_riverpod: ^2.0.2
+  freezed: ^2.2.1
 
 dev_dependencies:
   flutter_test:
