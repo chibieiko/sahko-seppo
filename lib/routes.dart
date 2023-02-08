@@ -3,7 +3,6 @@ import 'package:sahko_seppo/modules/home/home_screen.dart';
 
 class Routes {
   static const String home = '/';
-  static const String table = '/table';
 }
 
 Route routes(RouteSettings settings) {

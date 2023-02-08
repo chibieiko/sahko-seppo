@@ -1,13 +1,13 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:sahko_seppo/modules/spot_price_service.dart';
+import 'package:sahko_seppo/data/spot_price_repository.dart';
 import 'package:sahko_seppo/modules/spot_price_state.dart';
 
 SpotPriceState initialState =
-    SpotPriceState(electricityPeriods: List.empty(), isLoading: true);
+    SpotPriceState(electricityPrices: List.empty(), isLoading: true);
 
 class SpotPriceNotifier extends StateNotifier<SpotPriceState> {
-  final SpotPriceService _service;
+  final SpotPriceRepository _service;
 
   SpotPriceNotifier(this._service) : super(initialState) {
     fetch();
@@ -15,7 +15,8 @@ class SpotPriceNotifier extends StateNotifier<SpotPriceState> {
 
   Future<void> fetch() async {
     state = state.copyWith(isLoading: true);
-    final spotPrices = await _service.fetchSpotPrices();
-    state = state.copyWith(electricityPeriods: spotPrices, isLoading: false);
+    final spotPrices =
+        await _service.fetchSpotPrices(dotenv.env['API_KEY'] ?? "");
+    state = state.copyWith(electricityPrices: spotPrices, isLoading: false);
   }
 }
