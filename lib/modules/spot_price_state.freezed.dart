@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SpotPriceState {
-  List<ElectricityPeriod> get electricityPeriods =>
+  List<ElectricityPrice> get electricityPrices =>
       throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
 
@@ -31,7 +31,7 @@ abstract class $SpotPriceStateCopyWith<$Res> {
           SpotPriceState value, $Res Function(SpotPriceState) then) =
       _$SpotPriceStateCopyWithImpl<$Res, SpotPriceState>;
   @useResult
-  $Res call({List<ElectricityPeriod> electricityPeriods, bool isLoading});
+  $Res call({List<ElectricityPrice> electricityPrices, bool isLoading});
 }
 
 /// @nodoc
@@ -47,14 +47,14 @@ class _$SpotPriceStateCopyWithImpl<$Res, $Val extends SpotPriceState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? electricityPeriods = null,
+    Object? electricityPrices = null,
     Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
-      electricityPeriods: null == electricityPeriods
-          ? _value.electricityPeriods
-          : electricityPeriods // ignore: cast_nullable_to_non_nullable
-              as List<ElectricityPeriod>,
+      electricityPrices: null == electricityPrices
+          ? _value.electricityPrices
+          : electricityPrices // ignore: cast_nullable_to_non_nullable
+              as List<ElectricityPrice>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -71,7 +71,7 @@ abstract class _$$_SpotPriceStateCopyWith<$Res>
       __$$_SpotPriceStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ElectricityPeriod> electricityPeriods, bool isLoading});
+  $Res call({List<ElectricityPrice> electricityPrices, bool isLoading});
 }
 
 /// @nodoc
@@ -85,14 +85,14 @@ class __$$_SpotPriceStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? electricityPeriods = null,
+    Object? electricityPrices = null,
     Object? isLoading = null,
   }) {
     return _then(_$_SpotPriceState(
-      electricityPeriods: null == electricityPeriods
-          ? _value._electricityPeriods
-          : electricityPeriods // ignore: cast_nullable_to_non_nullable
-              as List<ElectricityPeriod>,
+      electricityPrices: null == electricityPrices
+          ? _value._electricityPrices
+          : electricityPrices // ignore: cast_nullable_to_non_nullable
+              as List<ElectricityPrice>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -105,15 +105,15 @@ class __$$_SpotPriceStateCopyWithImpl<$Res>
 
 class _$_SpotPriceState implements _SpotPriceState {
   _$_SpotPriceState(
-      {required final List<ElectricityPeriod> electricityPeriods,
+      {required final List<ElectricityPrice> electricityPrices,
       required this.isLoading})
-      : _electricityPeriods = electricityPeriods;
+      : _electricityPrices = electricityPrices;
 
-  final List<ElectricityPeriod> _electricityPeriods;
+  final List<ElectricityPrice> _electricityPrices;
   @override
-  List<ElectricityPeriod> get electricityPeriods {
+  List<ElectricityPrice> get electricityPrices {
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_electricityPeriods);
+    return EqualUnmodifiableListView(_electricityPrices);
   }
 
   @override
@@ -121,7 +121,7 @@ class _$_SpotPriceState implements _SpotPriceState {
 
   @override
   String toString() {
-    return 'SpotPriceState(electricityPeriods: $electricityPeriods, isLoading: $isLoading)';
+    return 'SpotPriceState(electricityPrices: $electricityPrices, isLoading: $isLoading)';
   }
 
   @override
@@ -130,14 +130,14 @@ class _$_SpotPriceState implements _SpotPriceState {
         (other.runtimeType == runtimeType &&
             other is _$_SpotPriceState &&
             const DeepCollectionEquality()
-                .equals(other._electricityPeriods, _electricityPeriods) &&
+                .equals(other._electricityPrices, _electricityPrices) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_electricityPeriods), isLoading);
+      const DeepCollectionEquality().hash(_electricityPrices), isLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -148,11 +148,11 @@ class _$_SpotPriceState implements _SpotPriceState {
 
 abstract class _SpotPriceState implements SpotPriceState {
   factory _SpotPriceState(
-      {required final List<ElectricityPeriod> electricityPeriods,
+      {required final List<ElectricityPrice> electricityPrices,
       required final bool isLoading}) = _$_SpotPriceState;
 
   @override
-  List<ElectricityPeriod> get electricityPeriods;
+  List<ElectricityPrice> get electricityPrices;
   @override
   bool get isLoading;
   @override

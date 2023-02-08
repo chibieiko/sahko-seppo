@@ -1,18 +1,17 @@
 import 'dart:developer';
-import 'package:retrofit/retrofit.dart';
-import 'package:dio/dio.dart';
 
-import 'package:sahko_seppo/data/electricity_models.dart';
-import 'package:sahko_seppo/utils/utils.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:retrofit/retrofit.dart';
+import 'package:sahko_seppo/data/electricity_price_dto.dart';
 
 part 'price_api.g.dart';
 
-@RestApi(baseUrl: "https://web-api.tp.entsoe.eu/api")
+@RestApi()
 abstract class ElectricityApi {
   factory ElectricityApi(Dio dio, {String? baseUrl}) {
     dio.interceptors.addAll([
       InterceptorsWrapper(onResponse: (Response response, handler) {
-        response.data = Utils.decodeXmlResponseToJson(response.data);
         return handler.next(response);
       }, onError: (DioError e, handler) {
         log("Error: $e");
@@ -20,17 +19,12 @@ abstract class ElectricityApi {
       })
     ]);
 
-    return _ElectricityApi(dio, baseUrl: baseUrl);
+    return _ElectricityApi(dio, baseUrl: dotenv.env['API_BASE_URL']);
   }
 
-  @GET("")
-  @DioResponseType(ResponseType.plain)
-  Future<MarketDocument> getSpotPrices(
-    @Query("securityToken") String securityToken,
-    @Query("documentType") String documentType,
-    @Query("in_Domain") String inDomain,
-    @Query("out_Domain") String outDomain,
-    @Query("periodStart") String periodStart,
-    @Query("periodEnd") String periodEnd,
+  @GET("/electricity-prices")
+  @DioResponseType(ResponseType.json)
+  Future<List<ElectricityPriceDto>> getSpotPrices(
+    @Header("x-api-key") String apiKey,
   );
 }

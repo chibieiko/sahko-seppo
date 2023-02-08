@@ -12,49 +12,37 @@ class _ElectricityApi implements ElectricityApi {
   _ElectricityApi(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://web-api.tp.entsoe.eu/api';
-  }
+  });
 
   final Dio _dio;
 
   String? baseUrl;
 
   @override
-  Future<MarketDocument> getSpotPrices(
-    securityToken,
-    documentType,
-    inDomain,
-    outDomain,
-    periodStart,
-    periodEnd,
-  ) async {
+  Future<List<ElectricityPriceDto>> getSpotPrices(apiKey) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'securityToken': securityToken,
-      r'documentType': documentType,
-      r'in_Domain': inDomain,
-      r'out_Domain': outDomain,
-      r'periodStart': periodStart,
-      r'periodEnd': periodEnd,
-    };
-    final _headers = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-api-key': apiKey};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<MarketDocument>(Options(
+        .fetch<List<dynamic>>(_setStreamType<List<ElectricityPriceDto>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
-      responseType: ResponseType.plain,
+      responseType: ResponseType.json,
     )
             .compose(
               _dio.options,
-              '',
+              '/electricity-prices',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = MarketDocument.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) =>
+            ElectricityPriceDto.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
