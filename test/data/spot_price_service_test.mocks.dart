@@ -13,7 +13,7 @@ import 'package:dio/src/options.dart' as _i2;
 import 'package:dio/src/response.dart' as _i6;
 import 'package:dio/src/transformer.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:sahko_seppo/data/electricity_price_dto.dart' as _i11;
+import 'package:sahko_seppo/data/dto/electricity_price_dto.dart' as _i11;
 import 'package:sahko_seppo/data/price_api.dart' as _i10;
 
 // ignore_for_file: type=lint

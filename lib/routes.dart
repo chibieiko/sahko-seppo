@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sahko_seppo/modules/home/home_screen.dart';
+import 'package:sahko_seppo/modules/home/home_view.dart';
 
 class Routes {
   static const String home = '/';

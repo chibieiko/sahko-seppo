@@ -1,9 +1,8 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:sahko_seppo/data/electricity_price_dto.dart';
+import 'package:sahko_seppo/data/dto/electricity_price_dto.dart';
 
 part 'price_api.g.dart';
 
@@ -19,7 +18,8 @@ abstract class ElectricityApi {
       })
     ]);
 
-    return _ElectricityApi(dio, baseUrl: dotenv.env['API_BASE_URL']);
+    return _ElectricityApi(dio,
+        baseUrl: const String.fromEnvironment('API_BASE_URL'));
   }
 
   @GET("/electricity-prices")

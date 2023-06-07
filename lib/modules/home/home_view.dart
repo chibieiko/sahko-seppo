@@ -52,7 +52,7 @@ class HomeState extends ConsumerState<Home>
         getCurrentElectricityPrice(electricityPrices, now.toLocal());
 
     String dishwasherDelay =
-        "Delay ${getOptimalDelayForNightTime(electricityPrices, 3, now) ?? "-"} h";
+        "Delay ${getOptimalDelayForNightTime(electricityPrices, 3, now)} h";
 
     return Scaffold(
       appBar: AppBar(
@@ -61,23 +61,42 @@ class HomeState extends ConsumerState<Home>
           style: const TextStyle(fontSize: 16),
         ),
       ),
-      body: (Column(children: [
-        Card(
-            child: Column(
-          children: [
-            HomeItemWidget(
-                title: dishwasherDelay,
-                subTitle: 'Dishwasher',
-                icon: Icons.flatware),
-          ],
-        ))
-      ])),
+      body: (SafeArea(
+          child: ListView(children: [
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Card(
+                child: HomeItemWidget(
+                    title: dishwasherDelay,
+                    subTitle: 'Dishwasher',
+                    icon: Icons.flatware),
+              ),
+              const SizedBox(height: 20),
+              ...spotPricesState.electricityPrices
+                  .map((price) => electricityPrice(price))
+            ]))
+      ]))),
       floatingActionButton: FloatingActionButton(
         onPressed: spotPrices.fetch,
         tooltip: 'Refresh',
         child: RotationTransition(
             turns: animationController, child: const Icon(Icons.refresh)),
       ),
+    );
+  }
+
+  Widget electricityPrice(ElectricityPrice price) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(children: [
+        Text("${price.startTime.toLocal().hour}",
+            style: const TextStyle(fontSize: 16)),
+        const Spacer(),
+        Text("${price.centsPerkWhWithVat()} cent/kWh",
+            style: const TextStyle(fontSize: 16))
+      ]),
     );
   }
 }

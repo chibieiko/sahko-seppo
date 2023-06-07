@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sahko_seppo/data/electricity_price_dto.dart';
+import 'package:sahko_seppo/data/dto/electricity_price_dto.dart';
 import 'package:sahko_seppo/data/price_api.dart';
 import 'package:sahko_seppo/data/spot_price_repository.dart';
 import 'package:sahko_seppo/modules/electricity_price.dart';
